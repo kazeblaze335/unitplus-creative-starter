@@ -3,17 +3,17 @@
 ## M-V-C (Model - View - Controller Framework for Creative Website Development)
 
 ## 🏴‍☠️ unitPLUS Engine v5.0
-### Where High-End Editorial Design meets Vanilla JS performance.
-### Penryn Engine is a lightweight, custom-built SPA (Single Page Application) framework ### designed for creative agencies who demand the fluidity of a modern web app without the ### overhead of bloated frameworks. It is built on the philosophy of "Tactile Digitalism"—every interaction is designed to feel physical, weighted, and intentional.
+## Where High-End Editorial Design meets Vanilla JS performance.
+unitPLUS® creative starter is a lightweight, custom-built SPA (Single Page Application) framework designed for creative agencies who demand the fluidity of a modern web app without the overhead of bloated frameworks. It is built on the philosophy of "Tactile Digitalism"—every interaction is designed to feel physical, weighted, and intentional.
 
 ## 💎 Core Benefits
-### Zero-Dependency Feel: Aside from Barba.js (for routing) and GSAP (optional), the engine is pure Vanilla JS. This ensures lightning-fast load times and a 100/100 Lighthouse score.
+Zero-Dependency Feel: Aside from Barba.js (for routing) and GSAP (optional), the engine is pure Vanilla JS. This ensures lightning-fast load times and a 100/100 Lighthouse score.
 
-### Decoupled Architecture: Logic (Controllers), Presentation (Templates), and Data (JSON) are strictly separated.
+Decoupled Architecture: Logic (Controllers), Presentation (Templates), and Data (JSON) are strictly separated.
 
-### Tactile UX: Features a magnetic interaction system that mimics high-end physical portfolio books.
+Tactile UX: Features a magnetic interaction system that mimics high-end physical portfolio books.
 
-### SEO & Routing: Combines the speed of an SPA with the reliability of a traditional multi-page site through intelligent .htaccess and Barba.js integration.
+SEO & Routing: Combines the speed of an SPA with the reliability of a traditional multi-page site through intelligent .htaccess and Barba.js integration.
 
 ## 🛠 Main Features
 1. The "Ghost" Router & Lifecycle
