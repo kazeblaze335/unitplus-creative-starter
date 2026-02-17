@@ -1,0 +1,49 @@
+{
+  "homepage": {
+    "total_projects": 10,
+    "featured_project": {
+      "id": "05",
+      "title": "Abyssae",
+      "category": "Cosmetics",
+<<<<<<< HEAD
+      "image_url": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=1200",
+      "alt_text": "L’Artisan Parfumeur Product Shot"
+    },
+    "projects_list": [
+      { "name": "MARC JACOBS", "active": false, "slug": "marc-jacobs" },
+      { "name": "LINVOSGES", "active": false, "slug": "linvosges" },
+      { "name": "LUTRON", "active": false, "slug": "lutron" },
+      { "name": "BEAU MAGAZINE", "active": false, "slug": "beau" },
+      { "name": "L’ARTISAN PARFUMEUR", "active": true, "slug": "artisan" },
+      { "name": "BOLL & BRANCH", "active": false, "slug": "boll-branch" },
+      { "name": "MIU MIU", "active": false, "slug": "miu-miu" },
+      { "name": "HERMÈS", "active": false, "slug": "hermes" },
+      { "name": "LOUIS VUITTON", "active": false, "slug": "louis-vuitton" },
+      { "name": "PUSSPUSS MAGAZINE", "active": false, "slug": "pusspuss" }
+=======
+      "image_url": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=600",
+      "alt_text": "L’Artisan Parfumeur Product Shot"
+    },
+    "projects_list": [
+      { "name": "MARC JACOBS", "active": false },
+      { "name": "LINVOSGES", "active": false },
+      { "name": "LUTRON", "active": false },
+      { "name": "BEAU MAGAZINE", "active": false },
+      { "name": "L’ARTISAN PARFUMEUR", "active": true },
+      { "name": "BOLL & BRANCH", "active": false },
+      { "name": "MIU MIU", "active": false },
+      { "name": "HERMÈS", "active": false },
+      { "name": "LOUIS VUITTON", "active": false },
+      { "name": "PUSSPUSS MAGAZINE", "active": false }
+>>>>>>> 290dbcb (second commit - docker)
+    ]
+  },
+  "site_settings": {
+    "brand_name": "PROTOTYPE",
+    "nav_links": [
+      { "label": "WORKS", "url": "/" },
+      { "label": "ABOUT", "url": "/about" },
+      { "label": "CONTACT", "url": "/contact" }
+    ]
+  }
+}

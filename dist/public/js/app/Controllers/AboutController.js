@@ -1,0 +1,1 @@
+import Controller from"../../engine/Controller.js";export default class AboutController extends Controller{async init(){const t=await fetch("/data/projects.json"),e=await t.json();await this.render("about",{brand:e.site_settings.brand_name,tagline:"We design things you didn't know you needed."}),console.log("About Lifecycle: Content Painted.")}}

@@ -1,0 +1,16 @@
+RewriteEngine On
+RewriteBase /
+
+# 1. Allow actual files to be served (CSS, JS, Images, etc.)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# 2. Skip the fallback for anything that looks like a file extension
+# This prevents the "MIME type" error if a .js file is actually missing
+RewriteCond %{REQUEST_URI} \.(jsx?|css|png|jpe?g|svg|json|webp)$ [NC]
+RewriteRule ^ - [R=404,L]
+
+# 3. Everything else goes to index.html for the JS Router
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.html [L]
