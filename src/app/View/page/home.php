@@ -1,0 +1,20 @@
+<div id="h">
+    <div id="h-content"><?= $this->data->msg; ?></div>
+    <a id="h-link" href="/about">ABOUT</a>
+    <div class="prototype-view">
+        <main class="hero-section">
+            <div class="counter">05 <span>/10</span></div>
+            <div class="center-content">
+                <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=600" alt="Work">
+                <div class="meta"><span>Abyssae</span><span>Cosmetics</span></div>
+            </div>
+            <div class="project-list">
+                <ul>
+                    <li>MARC JACOBS</li>
+                    <li class="active">L’ARTISAN PARFUMEUR</li>
+                    <li>LOUIS VUITTON</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+</div>

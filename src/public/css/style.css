@@ -1,0 +1,475 @@
+<<<<<<< HEAD
+/* Ensure the body and html allow height inheritance */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* The Barba Wrapper must be the full height of the viewport */
+[data-barba="wrapper"] {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* The Container must grow to fill available space */
+[data-barba="container"] {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    background: #ffffff;
+}
+
+/* The target div where your JS injects content */
+#app {
+    flex-grow: 1; /* This forces #app to fill the height of the container */
+    width: 100%;
+    min-height: 100%;
+    /* This ensures children don't collapse if they are floats */
+    display: block; 
+    position: relative;
+}
+
+/* Debug Helper: If #app is still 0px, this border will show you where it is */
+#app:empty::before {
+    content: "Penryn Engine: Waiting for Controller Content...";
+    display: block;
+    padding: 20px;
+    color: #ccc;
+    font-family: monospace;
+}
+
+#progress-bar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px; /* Thin and elegant */
+    z-index: 10000; /* Above everything */
+    pointer-events: none;
+}
+
+#progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #3498db; /* Choose your brand color */
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
+    transition: width 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+=======
+/* HomeController - Hero Section Styles */
+>>>>>>> 290dbcb (second commit - docker)
+
+.prototype-view {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-section {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1.5fr; /* Matches the 3-column split in the screenshot */
+    align-items: center;
+    height: 100%;
+    padding: 0 5%;
+    position: relative;
+}
+
+/* Large Numeric Counter (05 /10) */
+.counter {
+    font-size: 14rem;
+    font-weight: 300;
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    letter-spacing: -5px;
+}
+
+.counter span {
+    font-size: 3rem;
+    color: var(--text-primary);
+    margin-left: 10px;
+    letter-spacing: 0;
+}
+
+/* Center Image Container */
+.center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.center-content img {
+    max-width: 80%;
+    height: auto;
+    object-fit: cover;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* Meta description below/around image */
+.meta {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-family: serif; /* For the 'Abyssae' italic style */
+    font-style: italic;
+    font-size: 1.2rem;
+}
+
+/* Vertical Project List (Right Side) */
+.project-list {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.project-list ul {
+    list-style: none;
+    text-align: right;
+}
+
+.project-list li {
+    font-size: 2.2rem;
+    color: #cccccc; /* Faded for inactive items */
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+/* Active and Hover States */
+.project-list li.active, 
+.project-list li:hover {
+    color: #000000;
+    transform: translateX(-10px); /* Subtle slide effect */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .hero-section {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        padding-top: 100px;
+        gap: 50px;
+    }
+    
+    .counter { font-size: 8rem; justify-content: center; }
+    .project-list ul { text-align: center; }
+    .project-list { justify-content: center; }
+}
+
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    align-items: center;
+    gap: 100px;
+    padding: 0 10%;
+}
+
+.about-image img {
+    width: 100%;
+    max-height: 70vh;
+    object-fit: cover;
+    filter: sepia(20%);
+}
+
+.about-content h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+.about-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 20px;
+    max-width: 450px;
+}
+
+#contact-btn {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 15px 40px;
+    cursor: pointer;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: var(--transition-smooth);
+}
+
+#contact-btn:hover {
+    background: #333;
+<<<<<<< HEAD
+}
+
+#page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #ffffff; /* Use your site background */
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+#page-transition.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+/* Loader Container */
+.loader-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Show loader only when the overlay is active */
+#page-transition.is-active .loader-content {
+    opacity: 1;
+}
+
+/* Minimalist Spinner */
+.spinner {
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-top: 2px solid #000; /* Match your brand color */
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.loading-text {
+    font-family: monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#dev-toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #000;
+    color: #00ff00; /* Classic Terminal Green */
+    font-family: monospace;
+    font-size: 11px;
+    padding: 5px 15px;
+    z-index: 10000;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #333;
+    letter-spacing: 1px;
+}
+
+.dev-tag { margin-right: 20px; text-transform: uppercase; }
+.dev-active { color: #fff; font-weight: bold; }
+
+a { text-decoration: none; color: black; }
+
+/* Progress Bar Movement */
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: #00ff00; /* High-vis green for testing */
+    z-index: 10001;
+    transition: width 0.3s ease;
+    opacity: 0;
+}
+
+/* Page Overlay */
+#page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+}
+
+#page-transition.is-active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Monospace Editorial Layout */
+.monospace { font-family: 'Courier New', monospace; }
+.italic { font-style: italic; }
+
+/* Contact Page Specifics */
+.contact-page {
+    padding: 10vw 5vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.editorial-title {
+    font-size: clamp(2rem, 6vw, 5rem);
+    line-height: 1;
+    margin-bottom: 2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.editorial-copy {
+    font-size: 1.2rem;
+    max-width: 600px;
+    line-height: 1.6;
+    margin-bottom: 4rem;
+    opacity: 0.8;
+}
+
+.contact-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    border-top: 1px solid #000;
+    padding-top: 40px;
+}
+
+.detail-block .label {
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* The Cursor/Caret for the Typewriter */
+.typewriter-target::after {
+    content: '|';
+    animation: blink 0.7s infinite;
+    color: #3498db;
+}
+
+@keyframes blink {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* 1. Core Cursor Containers */
+#cursor-dot, 
+#cursor-outline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    z-index: 99999;
+    pointer-events: none; /* Crucial: ensures clicks pass through to links */
+    transform: translate(-50%, -50%);
+    will-change: transform;
+}
+
+/* 2. The Inner Dot (Precise) */
+#cursor-dot {
+    width: 6px;
+    height: 6px;
+    background: #3498db;
+    transition: transform 0.05s linear, opacity 0.3s ease;
+    animation: cursorPulse 2s infinite ease-in-out;
+}
+
+/* 3. The Outer Circle (The "Magnetic" Aura) */
+#cursor-outline {
+    width: 35px;
+    height: 35px;
+    border: 1px solid rgba(52, 152, 219, 0.5);
+    /* This slightly slower transition creates the "follow" lag */
+    transition: 
+        transform 0.15s ease-out, 
+        width 0.3s ease, 
+        height 0.3s ease, 
+        background 0.3s ease,
+        border 0.3s ease;
+}
+
+/* 4. Hover States (Triggered by JS adding .is-hovering to <body>) */
+body.is-hovering #cursor-outline {
+    width: 60px;
+    height: 60px;
+    background: rgba(52, 152, 219, 0.1);
+    border: 1px solid rgba(52, 152, 219, 0.8);
+}
+
+body.is-hovering #cursor-dot {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.5;
+}
+
+/* 5. The "Pulse" Animation for the Dot */
+@keyframes cursorPulse {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.7; }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* 6. Magnetic Element Transition 
+   Apply this to your links/buttons to make the pull feel smooth */
+a, .project-item, .magnetic-link {
+    display: inline-block; /* Required for transforms to work */
+    transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* 7. Debug HUD Styling */
+#cursor-debug {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #333;
+    z-index: 100000;
+    pointer-events: none;
+    line-height: 1.5;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+#cursor-debug strong {
+    color: #fff;
+    display: block;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+=======
+>>>>>>> 290dbcb (second commit - docker)
+}
