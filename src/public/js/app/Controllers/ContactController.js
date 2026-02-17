@@ -2,33 +2,74 @@ import Controller from '../../engine/Controller.js';
 
 export default class ContactController extends Controller {
     async init() {
-        // 1. Render the contact template
-        await this.render('contact');
+        // 1. Render the UI immediately from the template string
+        this.app.el.innerHTML = this.template();
 
-        // 2. Target the editorial headline
-        const headline = document.querySelector('.typewriter-target');
-        if (headline) {
-            this.typewrite(headline, "TALK IS CHEAP. OUR RETAINER IS NOT.");
+        // 2. Initialize the Typewriter effect
+        const target = document.getElementById('typewriter');
+        if (target) {
+            const text = "TALK IS CHEAP. OUR RETAINER IS NOT.";
+            this.typewrite(target, text);
+        }
+
+        // 3. Refresh the global cursor for the new magnetic links
+        if (window.Penryn && window.Penryn.cursor) {
+            window.Penryn.cursor.refresh();
         }
     }
 
-    /**
-     * Typewriter Effect
-     * @param {HTMLElement} element - Target element
-     * @param {string} text - The string to type
-     */
-    typewrite(element, text) {
-        element.innerText = ''; // Clear existing text
-        let i = 0;
-        const speed = 50; // Milliseconds per character
+    template() {
+        return `
+            <section class="contact-view monospace">
+                <div class="contact-container container">
+                    <header class="contact-header">
+                        <span class="label">STATUS: OPEN FOR BRIEFS (MAYBE)</span>
+                        <h2 id="typewriter" class="editorial-title uppercase"></h2>
+                    </header>
 
-        function type() {
+                    <div class="contact-grid">
+                        <div class="editorial-copy">
+                            <p>We don't do "synergy." We don't do "deliverables."</p>
+                            <p>We do work that makes your competitors reconsider their career choices.</p>
+                        </div>
+
+                        <div class="inquiry-links">
+                            <div class="link-group">
+                                <span class="label">ELECTRONIC MAIL</span>
+                                <a href="mailto:hello@prototype.agency" class="magnetic-link huge-link">HELLO@PROTOTYPE.AGENCY</a>
+                            </div>
+
+                            <div class="link-group">
+                                <span class="label">SOCIALS</span>
+                                <nav class="social-nav">
+                                    <a href="#" class="magnetic-link">INSTAGRAM</a>
+                                    <a href="#" class="magnetic-link">LINKEDIN</a>
+                                </nav>
+                            </div>
+
+                            <div class="link-group">
+                                <span class="label">COORDINATES</span>
+                                <p class="address">42 VAPORWAVE LANE,<br>NEO-TOKYO, 00000</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        `;
+    }
+
+    typewrite(el, text, speed = 60) {
+        let i = 0;
+        el.innerHTML = '';
+        el.classList.add('typing-active');
+
+        const timer = setInterval(() => {
             if (i < text.length) {
-                element.innerHTML += text.charAt(i);
+                el.innerHTML += text.charAt(i);
                 i++;
-                setTimeout(type, speed);
+            } else {
+                clearInterval(timer);
             }
-        }
-        type();
+        }, speed);
     }
 }

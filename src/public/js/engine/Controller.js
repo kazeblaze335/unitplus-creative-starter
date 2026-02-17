@@ -1,23 +1,21 @@
-import View from './View.js';
-
 export default class Controller {
-    constructor() {
-        this.container = document.getElementById('app');
+    constructor(app) {
+        this.app = app; // This is the window.Penryn instance
     }
 
     /**
-     * Replaces #app content with a template
+     * Entry point for the controller.
+     * Called by the Router after the view is mounted.
      */
-    async render(templateName) {
-        if (!this.container) return;
-        
-        // Load the HTML via our View utility
-        const html = await View.load(templateName);
-        
-        // Inject and clear placeholders
-        this.container.innerHTML = html;
-        
-        // Return this for chaining (useful for post-render logic)
-        return this;
+    async init() {
+        // Overridden by child controllers
+    }
+
+    /**
+     * Cleanup point.
+     * Called before moving to a new page.
+     */
+    destroy() {
+        // Remove specific event listeners if necessary
     }
 }

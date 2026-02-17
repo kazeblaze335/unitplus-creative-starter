@@ -3,9 +3,8 @@
     "total_projects": 10,
     "featured_project": {
       "id": "05",
-      "title": "Abyssae",
-      "category": "Cosmetics",
-<<<<<<< HEAD
+      "title": "ABYSSAE",
+      "category": "COSMETICS / VISUAL IDENTITY",
       "image_url": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=1200",
       "alt_text": "L’Artisan Parfumeur Product Shot"
     },
@@ -20,26 +19,11 @@
       { "name": "HERMÈS", "active": false, "slug": "hermes" },
       { "name": "LOUIS VUITTON", "active": false, "slug": "louis-vuitton" },
       { "name": "PUSSPUSS MAGAZINE", "active": false, "slug": "pusspuss" }
-=======
-      "image_url": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=600",
-      "alt_text": "L’Artisan Parfumeur Product Shot"
-    },
-    "projects_list": [
-      { "name": "MARC JACOBS", "active": false },
-      { "name": "LINVOSGES", "active": false },
-      { "name": "LUTRON", "active": false },
-      { "name": "BEAU MAGAZINE", "active": false },
-      { "name": "L’ARTISAN PARFUMEUR", "active": true },
-      { "name": "BOLL & BRANCH", "active": false },
-      { "name": "MIU MIU", "active": false },
-      { "name": "HERMÈS", "active": false },
-      { "name": "LOUIS VUITTON", "active": false },
-      { "name": "PUSSPUSS MAGAZINE", "active": false }
->>>>>>> 290dbcb (second commit - docker)
     ]
   },
   "site_settings": {
     "brand_name": "PROTOTYPE",
+    "tagline": "We design things you didn't know you needed.",
     "nav_links": [
       { "label": "WORKS", "url": "/" },
       { "label": "ABOUT", "url": "/about" },

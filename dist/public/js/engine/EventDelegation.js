@@ -1,1 +1,0 @@
-export default class EventDelegation{constructor(){this.listeners=new Map}on(e,t,s){this.listeners.has(e)||(this.listeners.set(e,[]),document.addEventListener(e,e=>this.handleEvent(e))),this.listeners.get(e).push({selector:t,callback:s})}handleEvent(e){const t=this.listeners.get(e.type);t&&t.forEach(({selector:t,callback:s})=>{const n=e.target.closest(t);n&&s(e,n)})}}

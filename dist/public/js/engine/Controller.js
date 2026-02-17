@@ -1,1 +1,0 @@
-import View from"./View.js";export default class Controller{constructor(){this.container=document.getElementById("app")}async render(t){if(!this.container)return;const e=await View.load(t);return this.container.innerHTML=e,this}}

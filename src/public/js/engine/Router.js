@@ -1,46 +1,43 @@
-/**
- * Router Engine (Namespace Edition)
- */
+import HomeController from '../Controller/HomeController.js';
+import AboutController from '../Controller/AboutController.js';
+import ContactController from '../Controller/ContactController.js';
+import ProjectDetailController from '../Controller/ProjectDetailController.js';
+
 export default class Router {
-    constructor() {
-        this.routes = {};
-        this.errorCallback = null;
-        this.activeController = null;
+    constructor(app) {
+        this.app = app;
+        // Inside your Router constructor routes object:
+        this.routes = {
+            'home': HomeController,
+            'about': AboutController,
+            'contact': ContactController,
+            'project': ProjectDetailController // Add this
+        };
+        this.initBarba();
     }
 
-    /**
-     * Map a Namespace or Path to a Controller
-     */
-    get(key, callback) {
-        this.routes[key] = callback;
+    initBarba() {
+        const self = this;
+        barba.init({
+            transitions: [{
+                async leave(data) {
+                    await self.app.transition.start();
+                },
+                async enter(data) {
+                    self.loadController(data.next.namespace);
+                    await self.app.transition.end();
+                }
+            }]
+        });
+
+        // Load initial page
+        this.loadController(barba.history.current.namespace || 'home');
     }
 
-    error(callback) {
-        this.errorCallback = callback;
-    }
-
-    /**
-     * @param {string|null} namespace - The Barba namespace
-     */
-    async resolve(namespace = null) {
-        // 1. Determine the key: Use namespace if provided, otherwise use clean URL path
-        const path = window.location.pathname || '/';
-        const key = namespace || path;
-
-        console.log(`Router: Attempting to resolve [${key}]`);
-
-        const callback = this.routes[key];
-
-        // 2. Cleanup old controller
-        if (this.activeController?.destroy) {
-            this.activeController.destroy();
-        }
-
-        // 3. Execute new controller
-        if (callback) {
-            this.activeController = await callback();
-        } else if (this.errorCallback) {
-            this.activeController = await this.errorCallback();
-        }
+    loadController(name) {
+        const ControllerClass = this.routes[name] || HomeController;
+        // Pass the app instance to the controller
+        const controller = new ControllerClass(this.app);
+        controller.init();
     }
 }

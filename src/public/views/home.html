@@ -1,18 +1,25 @@
-<section class="hero">
-    <div class="prototype-view">
-        <main class="hero-section">
-            <div class="counter">05 <span>/10</span></div>
-            <div class="center-content">
-                <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=600" alt="Work">
-                <div class="meta"><span>Abyssae</span><span>Cosmetics</span></div>
+<section class="home-hero">
+    <div class="split-layout">
+        <div class="featured-gallery">
+            <div class="meta monospace">
+                <span class="label">FEATURED_PROJECT / {{homepage.featured_project.id}}</span>
+                <h1 class="featured-title uppercase">{{homepage.featured_project.title}}</h1>
+                <p class="category italic">{{homepage.featured_project.category}}</p>
             </div>
-            <div class="project-list">
-                <ul>
-                    <li><a href="/about">MARC JACOBS - ABOUT</a></li>
-                    <li class="active">L’ARTISAN PARFUMEUR</li>
-                    <li>LOUIS VUITTON</li>
-                </ul>
+            <div class="image-wrapper">
+                <img class="featured-image shadow" 
+                     src="{{homepage.featured_project.image_url}}" 
+                     alt="{{homepage.featured_project.alt_text}}">
             </div>
-        </main>
+        </div>
+
+        <div class="project-sidebar">
+            <div class="sidebar-header monospace">
+                <span class="label">INDEX ({{homepage.total_projects}})</span>
+            </div>
+            <ul id="project-list" class="monospace">
+                <li class="loading-state">Syncing data...</li>
+            </ul>
+        </div>
     </div>
 </section>

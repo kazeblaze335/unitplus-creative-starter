@@ -1,26 +1,21 @@
 services:
-  # The Penryn Engine Service
   web:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: unitplus_dev_server
-    
-    # Mapping ports: Local 8080 -> Container 80
     ports:
       - "8000:80"
-    
-    # HOT-RELOADING: Maps your local src/public folder into the container.
-    # Any changes you save locally will reflect immediately.
     volumes:
+      # Map the whole public folder
       - ./src/public:/var/www/html
-    
-    # Environment settings for Apache
+      # Explicitly map the data folder as a backup sync
+      - ./src/public/data:/var/www/html/data
     environment:
       - APACHE_RUN_USER=www-data
       - APACHE_RUN_GROUP=www-data
-    
-    # Ensures the container restarts if it crashes
+    stdin_open: true
+    tty: true
     restart: always
 
 networks:

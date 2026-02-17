@@ -1,1 +1,0 @@
-import Controller from"../../engine/Controller.js";export default class ContactController extends Controller{async init(){await this.render("contact");const t=document.querySelector(".typewriter-target");t&&this.typewrite(t,"TALK IS CHEAP. OUR RETAINER IS NOT.")}typewrite(t,e){t.innerText="";let r=0;!function n(){r<e.length&&(t.innerHTML+=e.charAt(r),r++,setTimeout(n,50))}()}}

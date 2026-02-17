@@ -1,1 +1,0 @@
-import App from"./app/Core/App.js";window.addEventListener("DOMContentLoaded",()=>{console.log("Penryn Engine: Booting Lifecycle..."),window.Penryn=new App});
