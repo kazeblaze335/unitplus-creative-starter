@@ -1,60 +1,28 @@
 services:
-<<<<<<< HEAD
-  # The "web" service handles Apache and PHP
+  # The Penryn Engine Service
   web:
-    container_name: penryn_engine_web
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: unitplus_dev_server
+    
+    # Mapping ports: Local 8080 -> Container 80
     ports:
-      # Map localhost:8000 on your machine to Port 80 inside the container
       - "8000:80"
+    
+    # HOT-RELOADING: Maps your local src/public folder into the container.
+    # Any changes you save locally will reflect immediately.
     volumes:
-      # Syncs your entire current directory into the Apache root
-      # This allows for "Hot Reloading" of your JS, PHP, and CSS
-      - ./:/var/www/html
+      - ./src/public:/var/www/html
+    
+    # Environment settings for Apache
     environment:
-      # Helpful for debugging Apache issues within the container
-      - APACHE_LOG_DIR=/var/log/apache2
-    networks:
-      - penryn_network
+      - APACHE_RUN_USER=www-data
+      - APACHE_RUN_GROUP=www-data
+    
+    # Ensures the container restarts if it crashes
     restart: always
 
-# Define a custom network for better isolation
 networks:
-  penryn_network:
-    driver: bridge
-=======
-  # The Web Server / PHP App
-  app:
-    build: .
-    container_name: mvc_app
-    ports:
-      - "8000:80"
-    volumes:
-      # Map your CURRENT directory (where the src is) to the Apache root
-      - .:/var/www/html
-    environment:
-      # This tells the PHP-Apache image where to look
-      - APACHE_DOCUMENT_ROOT=/var/www/html/src
-    depends_on:
-      - db
-
-  # The Database
-  db:
-    image: mysql:8.0
-    container_name: mvc_db
-    restart: always
-    environment:
-      MYSQL_DATABASE: my_database
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_USER: user
-      MYSQL_PASSWORD: user_password
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-
-volumes:
-  db_data:
->>>>>>> 290dbcb (second commit - docker)
+  default:
+    name: unitplus_network

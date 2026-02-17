@@ -1,45 +1,37 @@
-<<<<<<< HEAD
-FROM php:8.3.12-apache
-=======
-# Use the official PHP Apache image
+# Use the official PHP 8.2 Apache image as the foundation
 FROM php:8.2-apache
 
-# 1. Install any needed PHP extensions (common for MVC/MySQL apps)
-RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable pdo_mysql
+# 1. Enable Apache Modules
+# rewrite: Essential for Barba.js to handle clean URLs (e.g., /about)
+# headers: Allows us to set custom CORS and Cache-Control headers
+RUN a2enmod rewrite headers
 
-# 2. Define the internal path (matching your docker-compose.yml)
-ENV APACHE_DOCUMENT_ROOT /var/www/html/src
->>>>>>> 290dbcb (second commit - docker)
-
-# 3. Update Apache config to point to the /src folder
-# This replaces all instances of /var/www/html with /var/www/html/src
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-# 4. Enable Apache Rewrite Module (Essential for MVC routing)
-RUN a2enmod rewrite
-
-<<<<<<< HEAD
-# Point Apache to the specific subfolder
-ENV APACHE_DOCUMENT_ROOT /var/www/html/src/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
-
-# Ensure .htaccess overrides are allowed in the NEW directory
-RUN { \
-    echo '<Directory /var/www/html/src/public/>'; \
-    echo '    Options -Indexes +FollowSymLinks'; \
-    echo '    AllowOverride All'; \
-    echo '    Require all granted'; \
-    echo '</Directory>'; \
-} >> /etc/apache2/apache2.conf
-
-=======
-# 5. Set the working directory
+# 2. Set the working directory inside the container
 WORKDIR /var/www/html
 
-# 6. Set permissions so the webserver can read your files
->>>>>>> 290dbcb (second commit - docker)
-RUN chown -R www-data:www-data /var/www/html
+# 3. Copy the source code to the container
+# This copies everything from your local src/public folder to Apache's root
+COPY src/public/ /var/www/html/
+
+# 4. Set Permissions
+# Ensures the webserver can read the files, specifically for JS modules and JSON data
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+# 5. Configure Apache for Single Page Application (SPA)
+# This overrides the default configuration to allow .htaccess files to work
+RUN echo '<Directory "/var/www/html">' > /etc/apache2/conf-available/penryn-engine.conf \
+    && echo '    Options Indexes FollowSymLinks' >> /etc/apache2/conf-available/penryn-engine.conf \
+    && echo '    AllowOverride All' >> /etc/apache2/conf-available/penryn-engine.conf \
+    && echo '    Require all granted' >> /etc/apache2/conf-available/penryn-engine.conf \
+    && echo '    # Ensure .json and .js files are served with correct MIME types' >> /etc/apache2/conf-available/penryn-engine.conf \
+    && echo '    AddType application/javascript .js' >> /etc/apache2/conf-available/penryn-engine.conf \
+    && echo '    AddType application/json .json' >> /etc/apache2/conf-available/penryn-engine.conf \
+    && echo '</Directory>' >> /etc/apache2/conf-available/penryn-engine.conf \
+    && a2enconf penryn-engine
+
+# 6. Expose Port 80
+EXPOSE 80
+
+# 7. Start Apache in the foreground
+CMD ["apache2-foreground"]
