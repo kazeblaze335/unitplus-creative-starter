@@ -1,5 +1,5 @@
-import Route from './Route.js';
-import Support from './Support.js';
+import Route from '/Route.js';
+import Support from '/Support.js';
 import Cursor from '../../engine/Cursor.js';
 import Transition from '../../engine/Transition.js';
 

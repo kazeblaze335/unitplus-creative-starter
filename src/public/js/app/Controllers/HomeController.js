@@ -1,85 +1,51 @@
-import Controller from '../../engine/Controller.js';
+import Controller from '/js/engine/Controller.js';
 
 export default class HomeController extends Controller {
     constructor(app) {
         super(app);
-        // Direct Data Object (Replaces projects.json)
-        this.data = {
-            featured: {
-                id: "05",
-                title: "ABYSSAE",
-                category: "COSMETICS / VISUAL IDENTITY",
-                image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=1200"
-            },
-            projects: [
-                { name: "MARC JACOBS", slug: "marc-jacobs" },
-                { name: "L’ARTISAN PARFUMEUR", slug: "artisan" },
-                { name: "MIU MIU", slug: "miu-miu" },
-                { name: "HERMÈS", slug: "hermes" },
-                { name: "LOUIS VUITTON", slug: "louis-vuitton" }
-            ]
-        };
+        this.projects = [
+            { id: '01', name: "MARC JACOBS", year: "2025", img: "/assets/img/marc.jpg" },
+            { id: '02', name: "L’ARTISAN PARFUMEUR", year: "2024", img: "/assets/img/artisan.jpg" },
+            { id: '03', name: "NIKE ACG", year: "2024", img: "/assets/img/nike.jpg" }
+        ];
     }
 
     async init() {
-        // Render the shell via template string
         this.app.el.innerHTML = this.template();
-
-        // Populate the project items
-        this.renderProjectList();
-
-        // Initialize hover logic
-        this.setupHoverPreview();
-
-        // Refresh cursor for new elements
-        if (window.Penryn && window.Penryn.cursor) window.Penryn.cursor.refresh();
+        this.setupTickerHovers();
     }
 
     template() {
+        // Double the list for seamless looping
+        const items = [...this.projects, ...this.projects].map(p => `
+            <div class="ticker-item" data-img="${p.img}">
+                <span class="t-id">${p.id}</span>
+                <span class="t-name">${p.name}</span>
+                <span class="t-year">${p.year}</span>
+            </div>
+        `).join('');
+
         return `
-            <section class="home-hero">
-                <div class="split-layout">
-                    <div class="featured-gallery">
-                        <div class="meta monospace">
-                            <span class="label">FEATURED_PROJECT / ${this.data.featured.id}</span>
-                            <h1 class="featured-title uppercase">${this.data.featured.title}</h1>
-                            <p class="category italic">${this.data.featured.category}</p>
-                        </div>
-                        <div class="image-wrapper">
-                            <img class="featured-image shadow" src="${this.data.featured.image}">
-                        </div>
-                    </div>
-                    <div class="project-sidebar">
-                        <div class="sidebar-header monospace"><span class="label">INDEX</span></div>
-                        <ul id="project-list" class="monospace"></ul>
-                    </div>
+            <div class="ticker-wrap">
+                <div class="ticker-move">
+                    ${items}
                 </div>
-            </section>
+            </div>
         `;
     }
 
-    renderProjectList() {
-        const list = document.getElementById('project-list');
-        // Inside HomeController.js renderProjectList
-        list.innerHTML = this.data.projects.map(proj => `
-            <li class="project-item magnetic-link">
-                <a href="/works/${proj.slug}" data-barba-namespace="project" data-barba>
-                    ${proj.name}
-                </a>
-            </li>
-            `).join('');
-    }
-
-    setupHoverPreview() {
-        const items = document.querySelectorAll('.project-item');
-        const img = document.querySelector('.featured-image');
-        const title = document.querySelector('.featured-title');
+    setupTickerHovers() {
+        const reveal = document.getElementById('bg-reveal-container');
+        const items = document.querySelectorAll('.ticker-item');
 
         items.forEach(item => {
             item.addEventListener('mouseenter', () => {
-                const name = item.getAttribute('data-name');
-                title.innerText = name;
-                img.src = `https://picsum.photos/seed/${name.length}/1200/800`;
+                const img = item.getAttribute('data-img');
+                reveal.style.backgroundImage = `url(${img})`;
+                reveal.classList.add('active');
+            });
+            item.addEventListener('mouseleave', () => {
+                reveal.classList.remove('active');
             });
         });
     }

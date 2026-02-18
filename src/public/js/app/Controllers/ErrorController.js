@@ -1,5 +1,6 @@
 // Implementation for ErrorController.js
-import Controller from '../../engine/Controller.js';
+// Inside HomeController.js, AboutController.js, etc.
+import Controller from '/js/engine/Controller.js';
 
 /**
  * ErrorController

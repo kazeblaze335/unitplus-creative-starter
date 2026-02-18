@@ -1,59 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROTOTYPE // Creative Agency</title>
-
+    <title>Penryn Agency</title>
     <link rel="stylesheet" href="/css/style.css">
-
     <script src="https://unpkg.com/@barba/core"></script>
 </head>
+<body data-barba="wrapper">
+    <div class="logo">PROTOTYPE<sup>©</sup></div>
+    
+    <div id="bg-reveal-container"></div>
 
-<body class="monospace">
-
-    <svg style="display:none;">
-        <filter id="grainy">
-            <feTurbulence type="fractalNoise" baseFrequency="0.60" numOctaves="3" stitchTiles="stitch" />
-            <feColorMatrix type="saturate" values="0" />
-        </filter>
-    </svg>
-
-    <div class="film-grain"></div>
-
-    <div id="progress-bar"></div>
-
-    <div id="cursor-dot"></div>
-    <div id="cursor-outline"></div>
-
-    <div id="page-transition"></div>
-
-    <div id="cursor-debug" style="display: none;">
-        <strong>CURSOR_DEBUG</strong>
-        <div>X: <span id="db-x">0</span></div>
-        <div>Y: <span id="db-y">0</span></div>
-        <div>TARGET: <span id="db-target">NONE</span></div>
-    </div>
-
-    <nav class="main-nav">
-        <div class="nav-logo">
-            <a href="/" data-barba>PROTOTYPE<sup>©</sup></a>
-        </div>
-        <div class="nav-links">
-            <a href="/" data-barba class="magnetic-link">WORKS</a>
-            <a href="/about" data-barba class="magnetic-link">ABOUT</a>
-            <a href="/contact" data-barba class="magnetic-link">CONTACT</a>
-        </div>
+    <nav class="main-nav-bottom">
+        <ul>
+            <li><a href="/works" data-barba>WORKS</a></li>
+            <li><a href="/about" data-barba>ABOUT</a></li>
+            <li><a href="/contact" data-barba>CONTACT</a></li>
+        </ul>
     </nav>
 
-    <main data-barba="wrapper">
-        <div data-barba="container" data-barba-namespace="home" id="app">
-        </div>
-    </main>
+    <main id="app" data-barba="container" data-barba-namespace="home">
+        </main>
 
     <script type="module" src="/js/main.js"></script>
-
 </body>
-
 </html>

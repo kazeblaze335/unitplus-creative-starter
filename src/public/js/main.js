@@ -1,48 +1,39 @@
 /**
- * PENRYN ENGINE CORE
- * The central bootstrapper for the agency framework.
+ * PENRYN ENGINE - UNIFIED CORE
+ * Merging App.js logic into main.js bootstrapper
  */
-import Cursor from './engine/Cursor.js';
-import Transition from './engine/Transition.js';
-import Router from './app/Core/Router.js';
+import Cursor from '/js/engine/Cursor.js';
+import Transition from '/js/engine/Transition.js';
+import Router from '/js/engine/Router.js'; // Note: Your Router is in /engine/
 
 class PenrynApp {
     constructor() {
-        console.log("🚀 Penryn Engine: Initializing...");
+        console.log("🚀 Penryn Engine: System Online");
 
-        // 1. Initialize Global UI components
+        // 1. Core Target (matches your #app div)
+        this.el = document.getElementById('app');
+
+        // 2. Initialize UI Components from /engine/
         this.cursor = new Cursor();
         this.transition = new Transition();
         
-        // 2. State Management
-        this.isTransitioning = false;
-
-        // 3. Initialize the Router
-        // This will automatically detect the current URL and boot the correct Controller
+        // 3. Boot the Router (now located in /engine/Router.js)
         this.router = new Router(this);
 
-        // 4. Global Event Listeners
-        this.initGlobalEvents();
+        // 4. Initial Render Trigger
+        this.boot();
     }
 
-    initGlobalEvents() {
-        // Handle window resizing for cursor/layout recalculations
-        window.addEventListener('resize', () => {
-            if (this.cursor) this.cursor.refresh();
-        });
-
-        // Debug mode toggle (using the ` backtick key)
-        window.addEventListener('keydown', (e) => {
-            if (e.key === '`') {
-                const debug = document.getElementById('cursor-debug');
-                if (debug) debug.style.display = debug.style.display === 'none' ? 'block' : 'none';
-            }
-        });
+    boot() {
+        const container = document.querySelector('[data-barba-namespace]');
+        const namespace = container ? container.getAttribute('data-barba-namespace') : 'home';
+        
+        console.log(`📦 Mounting View: ${namespace}`);
+        this.router.loadController(namespace);
     }
 }
 
-// BOOT THE SYSTEM
-// We attach it to the window so Controllers can call window.Penryn.cursor.refresh()
+// Global instance to allow controllers to access window.Penryn.cursor
 window.addEventListener('DOMContentLoaded', () => {
     window.Penryn = new PenrynApp();
 });
