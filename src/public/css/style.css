@@ -801,9 +801,9 @@ a, .project-item, .magnetic-link {
 
 /* Typography for the Ticker (Jil Sander vibes) */
 .ticker-item {
-    font-family: 'Inter', monospace, sans-serif; /* Or a very clean Sans-Serif */
+    font-family: monospace, sans-serif; /* Or a very clean Sans-Serif */
     text-transform: uppercase;
-    font-size: 8vw; /* Large, bold typography */
+    font-size: 5vw; /* Large, bold typography */
     font-weight: 300;
     padding: 0 4vw;
 }

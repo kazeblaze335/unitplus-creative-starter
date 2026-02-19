@@ -10,8 +10,8 @@ export default class AboutController extends Controller {
     }
 
     template() {
-        const brand = "PROTOTYPE";
-        return `
+         const brand = "PROTOTYPE";
+         return `
             <section class="about-view monospace">
                 <header class="editorial-header">
                     <div class="container">

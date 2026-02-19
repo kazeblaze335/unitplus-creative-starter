@@ -1,8 +1,6 @@
 /**
- * PENRYN ENGINE: ROUTER
+ * ENGINE: ROUTER
  * Location: /js/engine/Router.js
- * * Orchestrates Barba.js transitions, Controller logic, 
- * and diagnostic feedback via the DevToolbar.
  */
 
 import HomeController from '/js/app/Controllers/HomeController.js';
@@ -15,7 +13,6 @@ export default class Router {
     constructor(app) {
         this.app = app;
         
-        // Mapping namespaces to their respective Controllers
         this.routes = {
             'home': HomeController,
             'works': WorksController,
@@ -31,44 +28,44 @@ export default class Router {
         const self = this;
 
         barba.init({
-            debug: true, // Logs detailed lifecycle info to the console
+            debug: true,
             transitions: [{
-                name: 'penryn-standard-transition',
+                name: 'penryn-noir-transition',
 
-                // Phase 1: Outbound
+                // LEAVE PHASE: Current page fades out
                 async leave(data) {
-                    console.log("🛫 Barba: Leaving ", data.current.namespace);
+                    console.log("🛫 Barba: Initiating 'leave' for ", data.current.namespace);
                     
-                    // Safety check to prevent the "start is not a function" error
+                    // Verify the transition engine is ready
                     if (self.app.transition && typeof self.app.transition.start === 'function') {
                         await self.app.transition.start();
                     } else {
-                        console.warn("⚠️ Transition engine not found. Proceeding without animation.");
+                        console.warn("⚠️ Router: Transition engine missing 'start' function.");
                     }
                 },
 
-                // Phase 2: Inbound
+                // ENTER PHASE: New page content loads
                 async enter(data) {
-                    console.log("🛬 Barba: Entering ", data.next.namespace);
+                    console.log("🛬 Barba: Initiating 'enter' for ", data.next.namespace);
 
-                    // 1. Reset Global UI State
+                    // 1. Reset UI State
                     window.scrollTo(0, 0);
                     self.app.el = document.getElementById('app');
 
-                    // 2. Update Diagnostic Toolbar
-                    if (self.app.toolbar && typeof self.app.toolbar.update === 'function') {
+                    // 2. Update Toolbar
+                    if (self.app.toolbar) {
                         self.app.toolbar.update(data.next.namespace);
                     }
 
-                    // 3. Load the JS Controller for the new page
+                    // 3. Load logic for the new page
                     self.loadController(data.next.namespace);
 
-                    // 4. Re-bind Magnetic Physics and VIEW Triggers
+                    // 4. Refresh Cursor Triggers (Magnetic & VIEW)
                     if (window.Penryn && window.Penryn.cursor) {
                         window.Penryn.cursor.refresh();
                     }
 
-                    // 5. Cleanup Transition
+                    // 5. Cleanup Animation
                     if (self.app.transition && typeof self.app.transition.end === 'function') {
                         await self.app.transition.end();
                     }
@@ -78,24 +75,17 @@ export default class Router {
     }
 
     /**
-     * Instantiates and initializes the page-specific controller.
+     * Mounts the controller for the specific namespace.
      */
     loadController(name) {
-        // Fallback to Home if a namespace is missing or misspelled
         const ControllerClass = this.routes[name] || HomeController;
         
         try {
-            console.log(`✨ Mounting Controller: ${ControllerClass.name}`);
             const controller = new ControllerClass(this.app);
             controller.init();
+            console.log(`✨ Router: Mounted ${ControllerClass.name}`);
         } catch (error) {
-            console.error(`❌ Controller Initialization Error [${name}]:`, error);
-            
-            // Visual feedback in Toolbar if something breaks
-            if (this.app.toolbar) {
-                this.app.toolbar.el.style.color = '#ff4d4d'; // Change to error red
-                this.app.toolbar.el.innerHTML += ' | CONTROLLER_LOAD_FAIL';
-            }
+            console.error(`❌ Router: Controller failed [${name}]`, error);
         }
     }
 }

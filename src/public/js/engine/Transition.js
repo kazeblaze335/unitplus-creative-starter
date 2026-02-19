@@ -1,10 +1,10 @@
 /**
- * ENGINE TRANSITION
+ * ENGINE: TRANSITION
  * Location: /js/engine/Transition.js
  */
 export default class Transition {
     constructor() {
-        // Create the film grain overlay if it doesn't exist
+        // Create the grain element if it doesn't already exist in the HTML
         this.overlay = document.querySelector('.film-grain-overlay');
         
         if (!this.overlay) {
@@ -14,24 +14,27 @@ export default class Transition {
         }
     }
 
-    // Barba calls this on "leave"
+    /**
+     * Fades the grain IN.
+     * Triggered by Router during Barba 'leave'.
+     */
     async start() {
-        return new Promise(resolve => {
-            this.overlay.classList.add('is-active');
-            // Wait for the CSS transition to finish (matches 0.6s in CSS)
-            setTimeout(() => {
-                resolve();
-            }, 600);
-        });
+        console.log("🎬 Transition: Grain Fade-In Started");
+        this.overlay.classList.add('is-active');
+        
+        // Wait 600ms (matches CSS transition) before resolving
+        return new Promise(resolve => setTimeout(resolve, 600));
     }
 
-    // Barba calls this on "enter"
+    /**
+     * Fades the grain OUT.
+     * Triggered by Router during Barba 'enter'.
+     */
     async end() {
-        return new Promise(resolve => {
-            this.overlay.classList.remove('is-active');
-            setTimeout(() => {
-                resolve();
-            }, 600);
-        });
+        console.log("🎬 Transition: Grain Fade-Out Started");
+        this.overlay.classList.remove('is-active');
+        
+        // Wait 600ms before resolving
+        return new Promise(resolve => setTimeout(resolve, 600));
     }
 }
