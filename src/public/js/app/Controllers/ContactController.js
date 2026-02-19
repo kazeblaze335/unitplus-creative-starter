@@ -3,8 +3,17 @@ import Controller from '/js/engine/Controller.js';
 
 export default class ContactController extends Controller {
     async init() {
-        // 1. Render the UI immediately from the template string
+        console.log("🎨 Works: Initializing Gallery");
+        // 1. Manually update the namespace attribute so the Router/Toolbar sees it
+        this.app.el.setAttribute('data-barba-namespace', 'contact');
+
+        // 2. Inject the HTML
         this.app.el.innerHTML = this.template();
+
+         // 3. Update the Toolbar
+        if (this.app.toolbar) {
+            this.app.toolbar.update('works', this.projects.length);
+        }
 
         // 2. Initialize the Typewriter effect
         const target = document.getElementById('typewriter');

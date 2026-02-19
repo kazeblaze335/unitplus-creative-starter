@@ -7,24 +7,27 @@ class PenrynApp {
     constructor() {
         this.el = document.getElementById('app');
 
-        // 1. Initialize Engines FIRST
-        // These must be assigned to 'this' so the router can find them via 'self.app'
+        // IMPORTANT: The variable name MUST be 'transition' (lowercase)
+        // so that Router.js can find self.app.transition.start()
         this.transition = new Transition(); 
+        
         this.cursor = new Cursor();
         this.toolbar = new DevToolbar();
 
-        // 2. Initialize Router LAST
-        // We pass 'this' (the PenrynApp instance) so the router has access to the engines above
+        // Pass 'this' so the Router has access to this.transition
         this.router = new Router(this);
-
         this.boot();
     }
 
     boot() {
-        const container = document.querySelector('[data-barba-namespace]');
-        const namespace = container ? container.getAttribute('data-barba-namespace') : 'home';
-        
-        if (this.toolbar) this.toolbar.update(namespace);
+        const path = window.location.pathname;
+        let namespace = 'home'; // default
+    
+        if (path.includes('works')) namespace = 'works';
+        else if (path.includes('about')) namespace = 'about';
+        else if (path.includes('project')) namespace = 'project';
+    
+        this.toolbar.update(namespace);
         this.router.loadController(namespace);
     }
 }

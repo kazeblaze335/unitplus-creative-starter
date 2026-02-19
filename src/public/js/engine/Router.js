@@ -1,8 +1,8 @@
 /**
  * ENGINE: ROUTER
  * Location: /js/engine/Router.js
+ * Optimal SPA Solution: Prevents content-flicker and namespace stagnation.
  */
-
 import HomeController from '/js/app/Controllers/HomeController.js';
 import WorksController from '/js/app/Controllers/WorksController.js';
 import AboutController from '/js/app/Controllers/AboutController.js';
@@ -32,41 +32,56 @@ export default class Router {
             transitions: [{
                 name: 'penryn-noir-transition',
 
-                // LEAVE PHASE: Current page fades out
                 async leave(data) {
-                    console.log("🛫 Barba: Initiating 'leave' for ", data.current.namespace);
-                    
-                    // Verify the transition engine is ready
-                    if (self.app.transition && typeof self.app.transition.start === 'function') {
+                    // 1. Start Grain + Progress Bar
+                    if (self.app.transition) {
                         await self.app.transition.start();
-                    } else {
-                        console.warn("⚠️ Router: Transition engine missing 'start' function.");
                     }
                 },
 
-                // ENTER PHASE: New page content loads
                 async enter(data) {
-                    console.log("🛬 Barba: Initiating 'enter' for ", data.next.namespace);
+                    /**
+                     * THE OPTIMAL FIX: 
+                     * We await the container to ensure Barba has finished 
+                     * adding the new page to the DOM before we inject our JS templates.
+                     */
+                    await data.next.container;
 
-                    // 1. Reset UI State
+                    // 1. Reset Environment
                     window.scrollTo(0, 0);
-                    self.app.el = document.getElementById('app');
+                    
+                    // Re-target the fresh container Barba just brought in
+                    self.app.el = data.next.container; 
+                    self.app.el.style.visibility = 'visible';
+                    self.app.el.style.opacity = '1';
 
-                    // 2. Update Toolbar
+                    // 2. Resolve Namespace from URL (Reliable Source)
+                    const path = window.location.pathname;
+                    let namespace = 'home';
+
+                    if (path.includes('/works')) namespace = 'works';
+                    else if (path.includes('/about')) namespace = 'about';
+                    else if (path.includes('/contact')) namespace = 'contact';
+                    else if (path.includes('/project')) namespace = 'project';
+
+                    // 3. Sync DOM Attribute
+                    self.app.el.setAttribute('data-barba-namespace', namespace);
+
+                    // 4. Update UI Components
                     if (self.app.toolbar) {
-                        self.app.toolbar.update(data.next.namespace);
+                        self.app.toolbar.update(namespace);
                     }
 
-                    // 3. Load logic for the new page
-                    self.loadController(data.next.namespace);
+                    // 5. Load Controller (Injection happens here)
+                    self.loadController(namespace);
 
-                    // 4. Refresh Cursor Triggers (Magnetic & VIEW)
+                    // 6. Refresh Global Interactivity
                     if (window.Penryn && window.Penryn.cursor) {
                         window.Penryn.cursor.refresh();
                     }
 
-                    // 5. Cleanup Animation
-                    if (self.app.transition && typeof self.app.transition.end === 'function') {
+                    // 7. End Transition (Fade out grain/loader)
+                    if (self.app.transition) {
                         await self.app.transition.end();
                     }
                 }
@@ -75,17 +90,17 @@ export default class Router {
     }
 
     /**
-     * Mounts the controller for the specific namespace.
+     * Resolves and mounts the correct JS controller.
      */
     loadController(name) {
         const ControllerClass = this.routes[name] || HomeController;
         
         try {
+            console.log(`✨ Router: Mounting [${ControllerClass.name}]`);
             const controller = new ControllerClass(this.app);
             controller.init();
-            console.log(`✨ Router: Mounted ${ControllerClass.name}`);
         } catch (error) {
-            console.error(`❌ Router: Controller failed [${name}]`, error);
+            console.error(`❌ Router Error: [${name}]`, error);
         }
     }
 }

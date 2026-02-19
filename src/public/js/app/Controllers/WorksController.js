@@ -1,74 +1,96 @@
+/**
+ * WORKS CONTROLLER
+ * Location: /js/app/Controllers/WorksController.js
+ * Manages the editorial project grid and parallax effects.
+ */
 import Controller from '/js/engine/Controller.js';
 
 export default class WorksController extends Controller {
     constructor(app) {
         super(app);
+        
+        // Project Dataset
         this.projects = [
-            { id: '01', name: "MARC JACOBS", img: "/assets/img/marc.jpg", slug: "marc-jacobs" },
-            { id: '02', name: "L’ARTISAN PARFUMEUR", img: "/assets/img/artisan.jpg", slug: "artisan" },
-            { id: '03', name: "NIKE ACG", img: "/assets/img/nike.jpg", slug: "nike-acg" }
+            { id: '01', name: "MARC JACOBS", img: "https://images.unsplash.com/photo-1539109132314-34a956ed99d6?auto=format&fit=crop&q=80&w=1200", slug: "marc-jacobs" },
+            { id: '02', name: "NIKE ACG", img: "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=1200", slug: "nike-acg" },
+            { id: '03', name: "ARTISAN", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=1200", slug: "artisan-perfume" },
+            { id: '04', name: "HELMUT", img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=1200", slug: "helmut-archive" }
         ];
     }
 
     async init() {
+        console.log("🎨 Works: Initializing Gallery");
+        // 1. Manually update the namespace attribute so the Router/Toolbar sees it
+        this.app.el.setAttribute('data-barba-namespace', 'works');
+
+        // 2. Inject the HTML
         this.app.el.innerHTML = this.template();
-        this.items = document.querySelectorAll('.gallery-figure');
-        this.bindParallax();
-        
-        // Tell the cursor to look for the new .view-trigger elements
+
+         // 3. Update the Toolbar
+        if (this.app.toolbar) {
+            this.app.toolbar.update('works', this.projects.length);
+        }
+
+        // 3. Re-bind the Cursor VIEW triggers
         if (window.Penryn && window.Penryn.cursor) {
             window.Penryn.cursor.refresh();
         }
+
+        // 4. Start the Parallax Engine
+        this.initParallax();
     }
 
     template() {
         return `
-            <section class="works-gallery">
-                ${this.projects.map(p => `
-                    <div class="gallery-item">
-                        <a href="/project/${p.slug}" data-barba data-barba-namespace="project" class="gallery-link">
-                            <div class="gallery-info">
-                                <span class="g-number">${p.id}</span>
-                                <h2 class="g-title">${p.name}</h2>
-                            </div>
-                            <div class="gallery-figure view-trigger">
-                                <img src="${p.img}" class="parallax-img" alt="${p.name}">
-                            </div>
-                        </a>
-                    </div>
-                `).join('')}
+            <section class="works-section">
+                <div class="works-grid">
+                    ${this.projects.map(project => `
+                        <div class="works-item">
+                            <a href="/project/${project.slug}" 
+                               data-barba 
+                               class="gallery-link">
+                               
+                                <div class="works-info">
+                                    <span class="works-number">${project.id}</span>
+                                    <h2 class="works-title">${project.name}</h2>
+                                </div>
+
+                                <div class="works-figure view-trigger">
+                                    <img src="${project.img}" alt="${project.name}" class="parallax-img">
+                                </div>
+
+                            </a>
+                        </div>
+                    `).join('')}
+                </div>
             </section>
         `;
     }
 
-    bindParallax() {
-        const animate = () => {
-            this.items.forEach(figure => {
-                const rect = figure.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-
-                // Only calculate if the item is visible in the viewport
-                if (rect.top < windowHeight && rect.bottom > 0) {
-                    const img = figure.querySelector('.parallax-img');
-                    
-                    // Calculate scroll percentage relative to the element (0 to 1)
-                    const distance = rect.top + rect.height / 2;
-                    const percentage = (distance / windowHeight) - 0.5;
-                    
-                    // Apply a subtle Y-translation (adjust 15% for intensity)
-                    const move = percentage * 15; 
-                    img.style.transform = `scale(1.2) translateY(${move}%)`;
+    initParallax() {
+        const images = document.querySelectorAll('.parallax-img');
+        
+        const parallaxLoop = () => {
+            images.forEach(img => {
+                const rect = img.parentElement.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                
+                if (isVisible) {
+                    const distance = window.innerHeight + rect.height;
+                    const percentage = (window.innerHeight - rect.top) / distance;
+                    const move = (percentage - 0.5) * 80; // Parallax intensity
+                    img.style.transform = `translate3d(0, ${move}px, 0) scale(1.1)`;
                 }
             });
-            this.parallaxId = requestAnimationFrame(animate);
+            this.parallaxTicker = requestAnimationFrame(parallaxLoop);
         };
-        animate();
+
+        parallaxLoop();
     }
 
-    /**
-     * Clean up the animation loop when Barba leaves this page
-     */
     destroy() {
-        cancelAnimationFrame(this.parallaxId);
+        if (this.parallaxTicker) {
+            cancelAnimationFrame(this.parallaxTicker);
+        }
     }
 }

@@ -3,7 +3,19 @@ import Controller from '/js/engine/Controller.js';
 
 export default class AboutController extends Controller {
     async init() {
+        console.log("🎨 Works: Initializing Gallery");
+        // 1. Manually update the namespace attribute so the Router/Toolbar sees it
+        this.app.el.setAttribute('data-barba-namespace', 'about');
+
+        // 2. Inject the HTML
         this.app.el.innerHTML = this.template();
+
+         // 3. Update the Toolbar
+        if (this.app.toolbar) {
+            this.app.toolbar.update('works', this.projects.length);
+        }
+
+        
         
         // Refresh cursor for the big-cta and magnetic links
         if (window.Penryn && window.Penryn.cursor) window.Penryn.cursor.refresh();

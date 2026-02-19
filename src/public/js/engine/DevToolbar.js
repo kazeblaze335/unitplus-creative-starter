@@ -1,5 +1,5 @@
 /**
- * ENGINE DIAGNOSTICS TOOLBAR
+ * ENGINE: DIAGNOSTICS TOOLBAR
  * Location: /js/engine/DevToolbar.js
  */
 export default class DevToolbar {
@@ -11,26 +11,30 @@ export default class DevToolbar {
     createEl() {
         this.el = document.createElement('div');
         this.el.id = 'penryn-dev-toolbar';
-        // Basic inline styles to ensure it shows up regardless of CSS loading
         Object.assign(this.el.style, {
             position: 'fixed',
             bottom: '0',
             right: '0',
             background: '#000',
-            color: '#0f0', // Matrix green for high visibility
-            padding: '5px 12px',
+            color: '#0f0', 
+            padding: '8px 15px',
             fontSize: '10px',
             fontFamily: 'monospace',
             zIndex: '10000',
             letterSpacing: '1px',
-            borderTopLeftRadius: '4px',
             textTransform: 'uppercase'
         });
         document.body.appendChild(this.el);
     }
 
-    update(namespace) {
+    /**
+     * @param {string} namespace - Current page ID
+     * @param {number|null} count - Number of projects (if applicable)
+     */
+    update(namespace, count = null) {
         const path = window.location.pathname;
-        this.el.innerHTML = `ROUTE: ${path} | NAMESPACE: ${namespace} | BARBA: ACTIVE`;
+        const countString = count !== null ? ` | PROJECTS: ${count.toString().padStart(2, '0')}` : '';
+        
+        this.el.innerHTML = `ROUTE: ${path} | NAMESPACE: ${namespace}${countString} | BARBA: ACTIVE`;
     }
 }

@@ -11,7 +11,17 @@ export default class HomeController extends Controller {
     }
 
     async init() {
+        console.log("🎨 Works: Initializing Gallery");
+        // 1. Manually update the namespace attribute so the Router/Toolbar sees it
+        this.app.el.setAttribute('data-barba-namespace', 'home');
+
+        // 2. Inject the HTML
         this.app.el.innerHTML = this.template();
+
+         // 3. Update the Toolbar
+        if (this.app.toolbar) {
+            this.app.toolbar.update('works', this.projects.length);
+        }
         this.setupTickerHovers();
     }
 
