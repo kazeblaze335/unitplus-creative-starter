@@ -1,61 +1,37 @@
 /**
- * Transition Engine (Progress Bar Edition)
+ * ENGINE TRANSITION
+ * Location: /js/engine/Transition.js
  */
 export default class Transition {
     constructor() {
-        this.overlay = document.getElementById('page-transition');
-        this.progressBar = document.getElementById('progress-bar');
-    }
-
-    /**
-     * Start the progress bar (usually called in 'leave')
-     */
-    startProgress() {
-        if (!this.progressBar) return;
-        this.progressBar.style.opacity = '1';
-        this.progressBar.style.width = '30%'; // Jump to 30% immediately
-    }
-
-    /**
-     * Update to a specific percentage
-     */
-    setProgress(percent) {
-        if (!this.progressBar) return;
-        this.progressBar.style.width = `${percent}%`;
-    }
-
-    /**
-     * Complete the progress and hide
-     */
-    async finishProgress() {
-        if (!this.progressBar) return;
-        this.progressBar.style.width = '100%';
+        // Create the film grain overlay if it doesn't exist
+        this.overlay = document.querySelector('.film-grain-overlay');
         
-        await this.delay(300);
-        this.progressBar.style.opacity = '0';
-        
-        await this.delay(300);
-        this.progressBar.style.width = '0%';
+        if (!this.overlay) {
+            this.overlay = document.createElement('div');
+            this.overlay.className = 'film-grain-overlay';
+            document.body.appendChild(this.overlay);
+        }
     }
 
-    async out(data) {
-        this.startProgress(); // Start the bar
-        if (this.overlay) {
+    // Barba calls this on "leave"
+    async start() {
+        return new Promise(resolve => {
             this.overlay.classList.add('is-active');
-            await this.delay(500);
-        }
+            // Wait for the CSS transition to finish (matches 0.6s in CSS)
+            setTimeout(() => {
+                resolve();
+            }, 600);
+        });
     }
 
-    async in(data) {
-        this.setProgress(80); // We're almost there
-        if (this.overlay) {
+    // Barba calls this on "enter"
+    async end() {
+        return new Promise(resolve => {
             this.overlay.classList.remove('is-active');
-            await this.delay(500);
-        }
-        await this.finishProgress(); // Wrap it up
-    }
-
-    delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+            setTimeout(() => {
+                resolve();
+            }, 600);
+        });
     }
 }

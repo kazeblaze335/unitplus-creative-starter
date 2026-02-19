@@ -16,10 +16,8 @@ export default class HomeController extends Controller {
     }
 
     template() {
-        // Double the list for seamless looping
         const items = [...this.projects, ...this.projects].map(p => `
             <div class="ticker-item" data-img="${p.img}">
-                <span class="t-id">${p.id}</span>
                 <span class="t-name">${p.name}</span>
                 <span class="t-year">${p.year}</span>
             </div>
@@ -27,15 +25,14 @@ export default class HomeController extends Controller {
 
         return `
             <div class="ticker-wrap">
-                <div class="ticker-move">
-                    ${items}
-                </div>
+                <div class="ticker-move">${items}</div>
             </div>
         `;
     }
 
     setupTickerHovers() {
         const reveal = document.getElementById('bg-reveal-container');
+        const logo = document.querySelector('.logo'); // Target the logo
         const items = document.querySelectorAll('.ticker-item');
 
         items.forEach(item => {
@@ -43,9 +40,12 @@ export default class HomeController extends Controller {
                 const img = item.getAttribute('data-img');
                 reveal.style.backgroundImage = `url(${img})`;
                 reveal.classList.add('active');
+                logo.classList.add('is-hidden'); // Fade logo out
             });
+
             item.addEventListener('mouseleave', () => {
                 reveal.classList.remove('active');
+                logo.classList.remove('is-hidden'); // Fade logo in
             });
         });
     }

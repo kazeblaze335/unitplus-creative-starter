@@ -1,47 +1,36 @@
 /**
- * Developer Toolbar
- * Visualizes the current SPA state and Controller lifecycle.
+ * ENGINE DIAGNOSTICS TOOLBAR
+ * Location: /js/engine/DevToolbar.js
  */
 export default class DevToolbar {
-    constructor(app) {
-        this.app = app;
-        this.el = null;
-        this.init();
+    constructor() {
+        this.createEl();
+        this.update('INITIALIZING...');
     }
 
-    init() {
-        // Create the element
+    createEl() {
         this.el = document.createElement('div');
-        this.el.id = 'dev-toolbar';
-        document.body.appendChild(this.el);
-
-        // Update the bar immediately and on every resolve
-        this.update();
-        
-        // Listen for route changes to refresh the UI
-        window.addEventListener('popstate', () => this.update());
-        
-        // We also hook into the click event to update after the transition
-        document.addEventListener('click', () => {
-            setTimeout(() => this.update(), 600); 
+        this.el.id = 'penryn-dev-toolbar';
+        // Basic inline styles to ensure it shows up regardless of CSS loading
+        Object.assign(this.el.style, {
+            position: 'fixed',
+            bottom: '0',
+            right: '0',
+            background: '#000',
+            color: '#0f0', // Matrix green for high visibility
+            padding: '5px 12px',
+            fontSize: '10px',
+            fontFamily: 'monospace',
+            zIndex: '10000',
+            letterSpacing: '1px',
+            borderTopLeftRadius: '4px',
+            textTransform: 'uppercase'
         });
+        document.body.appendChild(this.el);
     }
 
-    update() {
-        const router = this.app.route.router;
-        const controller = router.activeController;
-        const controllerName = controller ? controller.constructor.name : 'None';
-        const signalActive = controller?.abortController ? 'ACTIVE' : 'INACTIVE';
-
-        this.el.innerHTML = `
-            <div>
-                <span class="dev-tag">System: <span class="dev-active">Penryn v1.2</span></span>
-                <span class="dev-tag">Controller: <span class="dev-active">${controllerName}</span></span>
-            </div>
-            <div>
-                <span class="dev-tag">AbortSignal: <span class="dev-active" style="color:${signalActive === 'ACTIVE' ? '#00ff00' : '#ff0000'}">${signalActive}</span></span>
-                <span class="dev-tag">Path: <span class="dev-active">${window.location.pathname}</span></span>
-            </div>
-        `;
+    update(namespace) {
+        const path = window.location.pathname;
+        this.el.innerHTML = `ROUTE: ${path} | NAMESPACE: ${namespace} | BARBA: ACTIVE`;
     }
-}   
+}
