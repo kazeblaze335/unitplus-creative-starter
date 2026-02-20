@@ -1,51 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PENRYN | Creative Agency</title>
-    
+    <title>PENRYN — Creative Laboratory</title>
     <link rel="stylesheet" href="/css/style.css">
-
-    <link rel="preconnect" href="https://unpkg.com">
 </head>
-<body data-barba="wrapper">
 
+<body data-barba="wrapper">
+    
     <div id="bg-reveal-container"></div>
 
-    <div class="logo">PROTOTYPE<sup>©</sup></div>
+    <div class="loader-bar"></div>
+    <div class="film-grain-overlay"></div>
 
-    <nav class="main-nav-bottom">
-        <ul>
-            <li>
-                <a href="/" data-barba>
-                    <span class="magnetic-link">HOME</span>
-                </a>
-            </li>
-            <li>
-                <a href="/works" data-barba>
-                    <span class="magnetic-link">WORKS</span>
-                </a>
-            </li>
-            <li>
-                <a href="/about" data-barba>
-                    <span class="magnetic-link">ABOUT</span>
-                </a>
-            </li>
-            <li>
-                <a href="/contact" data-barba>
-                    <span class="magnetic-link">CONTACT</span>
-                </a>
-            </li>
-        </ul>
+    <nav class="nav-interface">
+        <a href="/" data-barba class="nav-logo">PENRYN</a>
+        <div class="nav-links">
+            <a href="/works" data-barba>WORKS</a>
+            <a href="/about" data-barba>ABOUT</a>
+            <a href="/contact" data-barba>CONTACT</a>
+        </div>
     </nav>
 
     <main id="app" data-barba="container" data-barba-namespace="home">
-        </main>
+    </main>
 
     <script src="https://unpkg.com/@barba/core"></script>
-    
     <script type="module" src="/js/main.js"></script>
-
 </body>
+
 </html>

@@ -22,25 +22,6 @@ html, body {
     background: #ffffff;
 }
 
-/* The target div where your JS injects content */
-#app {
-    flex-grow: 1; /* This forces #app to fill the height of the container */
-    width: 100%;
-    min-height: 100%;
-    /* This ensures children don't collapse if they are floats */
-    display: block; 
-    position: relative;
-}
-
-/* Debug Helper: If #app is still 0px, this border will show you where it is */
-#app:empty::before {
-    content: "Penryn Engine: Waiting for Controller Content...";
-    display: block;
-    padding: 20px;
-    color: #ccc;
-    font-family: monospace;
-}
-
 #progress-bar-container {
     position: fixed;
     top: 0;
@@ -767,17 +748,156 @@ a, .project-item, .magnetic-link {
     100% { transform: translateX(-50%); }
 }
 
-/* Background Reveal */
+/* --- THE GLOBAL Z-STACK --- */
+
+/* The background of the whole site */
+body {
+    background-color: #000;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* The target div where your JS injects content */
+#app {
+    flex-grow: 1; /* This forces #app to fill the height of the container */
+    width: 100%;
+    min-height: 100%;
+    /* This ensures children don't collapse if they are floats */
+    display: block; 
+    position: relative;
+    z-index: 10;
+    background: transparent;
+}
+
+/* --- FULLSCREEN BACKGROUND REVEAL --- */
 #bg-reveal-container {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-size: cover;
-    background-position: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1; /* Sits behind the main content (#app) */
     opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: -1;
+    transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    background: #000;
+    overflow: hidden;
 }
-#bg-reveal-container.active { opacity: 1; }
+
+#bg-reveal-container.is-active {
+    opacity: 0.4; /* Keep it subtle so text remains legible */
+}
+
+.reveal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) brightness(0.7);
+    transform: scale(1.1);
+    transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Temporary Debugging */
+#bg-reveal-container {
+    opacity: 1 !important;
+    z-index: 10 !important; /* This will put it on TOP of everything */
+}
+
+/* 2. The Reveal Container */
+#bg-reveal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;   /* Force viewport width */
+    height: 100vh;  /* Force viewport height */
+    display: block; /* Ensure it's not hidden */
+    pointer-events: none;
+    z-index: -1;    /* Move it behind EVERYTHING */
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+#bg-reveal-container.is-active {
+    opacity: 0.5;   /* Keep it semi-transparent for the noir vibe */
+}
+
+/* 3. The Image - MUST have dimensions to show object-fit */
+.reveal-img {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* 4. The Content Shell - CRITICAL */
+#app {
+    position: relative;
+    z-index: 10;
+    background: transparent !important; /* Ensure NO background color here */
+    min-height: 100vh;
+}
+
+#bg-reveal-container.is-active .reveal-img {
+    transform: scale(1); /* Subtle "zoom out" effect on reveal */
+}
+
+/* Debug Helper: If #app is still 0px, this border will show you where it is */
+#app:empty::before {
+    content: "Penryn Engine: Waiting for Controller Content...";
+    display: block;
+    padding: 20px;
+    color: #ccc;
+    font-family: monospace;
+}
+
+/* Ensure the root containers are transparent */
+#app, 
+.home-ticker-wrapper {
+    background: transparent !important; 
+    background-color: transparent !important;
+}
+
+/* Ensure the body is the only thing providing the 'black' floor */
+body {
+    background-color: #000;
+}
+
+/* Reset the Reveal Container to sit BEHIND */
+#bg-reveal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0; /* Sit on top of body, but under #app */
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+#bg-reveal-container.is-active {
+    opacity: 0.6; /* Adjust this to see the image through the text */
+}
+
+/* When hovering, make the text solid white to cut through the BG image */
+.ticker-item:hover .ticker-text {
+    color: #fff;
+    -webkit-text-stroke: 1px #fff;
+    text-shadow: 0 0 20px rgba(0,0,0,0.5); /* Adds a subtle 'lift' from the BG */
+}
+
+
+/* Navigation: Highest z-index to always be clickable */
+.nav-interface {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1000; 
+}
 
 /* Logo Styling */
 .logo {
@@ -786,10 +906,15 @@ a, .project-item, .magnetic-link {
     left: 40px;
     font-family: 'Helvetica', sans-serif;
     font-weight: 700;
+    color: #f3f3f3;
     letter-spacing: 0.1em;
     z-index: 1000;
     transition: opacity 0.6s cubic-bezier(0.19, 1, 0.22, 1), 
                 transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.nav-logo, .nav-links {
+    color: #f3f3f3;
 }
 
 /* Logo Hidden State */
@@ -846,7 +971,7 @@ a, .project-item, .magnetic-link {
     font-size: 12px;
     letter-spacing: 2px;
     text-decoration: none;
-    color: #000;
+    color: #f3f3f3;
     display: block;
     margin-bottom: 8px;
     transition: opacity 0.3s;
@@ -1024,4 +1149,282 @@ a, .project-item, .magnetic-link {
 
 .film-grain-overlay.is-active {
     opacity: 0.12;
+}
+
+/* About Page Editorial CSS */
+
+/* --- ABOUT PAGE LAYOUT --- */
+.about-container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background: #000;
+}
+
+/* Left Visual (Fixed or Sticky) */
+.about-visual {
+    width: 50%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow: hidden;
+    background: #111;
+}
+
+.about-image-wrapper {
+    width: 100%;
+    height: 100%;
+    filter: grayscale(1) contrast(1.1);
+}
+
+.about-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Right Content (Scrolling) */
+.about-content {
+    width: 50%;
+    padding: 15vh 8vw;
+    color: #fff;
+}
+
+.about-title {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 0.9;
+    margin: 20px 0 60px;
+    letter-spacing: -0.04em;
+}
+
+.lead {
+    font-size: 1.5rem;
+    line-height: 1.4;
+    margin-bottom: 80px;
+    font-weight: 300;
+}
+
+.about-section {
+    margin-bottom: 60px;
+}
+
+.about-section h3 {
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.about-section p {
+    line-height: 1.8;
+    color: #ccc;
+    max-width: 400px;
+}
+
+.services-list {
+    list-style: none;
+    padding: 0;
+}
+
+.services-list li {
+    font-size: 1.2rem;
+    padding: 10px 0;
+    border-bottom: 1px solid #222;
+}
+
+.about-footer {
+    margin-top: 100px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+    .about-container { flex-direction: column; }
+    .about-visual, .about-content { width: 100%; height: auto; }
+    .about-visual { height: 60vh; position: relative; }
+}
+
+/* --- CONTACT PAGE --- */
+.contact-view {
+    padding: 15vh 10vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.contact-title {
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    margin: 20px 0 80px;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10vw;
+    border-top: 1px solid #222;
+    padding-top: 60px;
+}
+
+.contact-item {
+    margin-bottom: 60px;
+}
+
+.contact-item .label {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.large-link {
+    font-size: clamp(1.2rem, 2vw, 2.5rem);
+    font-weight: 500;
+    text-decoration: none;
+    color: #fff;
+    display: inline-block;
+}
+
+.social-list {
+    list-style: none;
+    padding: 0;
+}
+
+.social-list li {
+    margin-bottom: 10px;
+}
+
+.social-list a {
+    font-size: 1.2rem;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.office-address {
+    line-height: 1.6;
+    color: #ccc;
+}
+
+/* Bottom Ticker */
+.contact-footer-ticker {
+    margin-top: 10vh;
+    border-top: 1px solid #222;
+    padding: 20px 0;
+    overflow: hidden;
+}
+
+.ticker-wrap {
+    white-space: nowrap;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #444;
+    animation: contactTicker 20s linear infinite;
+}
+
+@keyframes contactTicker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@media (max-width: 800px) {
+    .contact-grid { grid-template-columns: 1fr; }
+}
+
+/* Reveal Container Shell */
+/* --- FULLSCREEN BACKGROUND REVEAL --- */
+#bg-reveal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    /* Lower than #app so it stays behind text */
+    z-index: 1; 
+    opacity: 0;
+    background: #000;
+    overflow: hidden;
+    transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+#bg-reveal-container.is-active {
+    opacity: 0.5; /* Adjust this to control how much the image "dims" behind text */
+}
+
+.reveal-img {
+    width: 100%;
+    height: 100%;
+    /* Forces image to cover screen without stretching */
+    object-fit: cover; 
+    object-position: center;
+    filter: grayscale(1) brightness(0.6);
+    transform: scale(1.05);
+    transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+#bg-reveal-container.is-active .reveal-img {
+    transform: scale(1);
+}
+
+/* Home Ticker Styling */
+.home-ticker-wrapper {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: #000;
+}
+
+.ticker-move {
+    display: flex;
+    white-space: nowrap;
+    animation: tickerLoop 30s linear infinite;
+}
+
+.ticker-item {
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    cursor: pointer;
+}
+
+.ticker-text {
+    font-size: 12vw;
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.8);
+    transition: -webkit-text-stroke 0.3s ease, color 0.3s ease;
+}
+
+.ticker-item:hover .ticker-text {
+    color: #fff;
+    -webkit-text-stroke: 1px #fff;
+}
+
+.ticker-symbol {
+    font-size: 4vw;
+    margin-left: 40px;
+    color: #333;
+}
+
+@keyframes tickerLoop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-33.33%); }
+}
+
+.ticker-move.is-focusing .ticker-item {
+    opacity: 0.2;
+}
+
+.ticker-move.is-focusing .ticker-item:hover {
+    opacity: 1;
+}
+
+.ticker-item {
+    transition: opacity 0.4s ease;
 }

@@ -12,7 +12,7 @@ export default class ContactController extends Controller {
 
          // 3. Update the Toolbar
         if (this.app.toolbar) {
-            this.app.toolbar.update('works', this.projects.length);
+            this.app.toolbar.update('contact', this.projects.length);
         }
 
         // 2. Initialize the Typewriter effect
@@ -28,43 +28,59 @@ export default class ContactController extends Controller {
         }
     }
 
+    destroy() {
+    cancelAnimationFrame(this.tickerId); // Stops the follow loop
+    window.removeEventListener('mousemove', this.mouseHandler); // Stops mouse tracking
+    console.log("Contact Loop Stopped");
+}
+
     template() {
         return `
-            <section class="contact-view monospace">
-                <div class="contact-container container">
-                    <header class="contact-header">
-                        <span class="label">STATUS: OPEN FOR BRIEFS (MAYBE)</span>
-                        <h2 id="typewriter" class="editorial-title uppercase"></h2>
-                    </header>
+            <div class="contact-view">
+                <div class="contact-header">
+                    <span class="g-number">04 / CONNECTION</span>
+                    <h1 class="contact-title">START THE <br>CONVERSATION.</h1>
+                </div>
 
-                    <div class="contact-grid">
-                        <div class="editorial-copy">
-                            <p>We don't do "synergy." We don't do "deliverables."</p>
-                            <p>We do work that makes your competitors reconsider their career choices.</p>
+                <div class="contact-grid">
+                    <div class="contact-col">
+                        <div class="contact-item">
+                            <span class="label">GENERAL INQUIRIES</span>
+                            <a href="mailto:hello@penryn.studio" class="magnetic-link large-link">HELLO@PENRYN.STUDIO</a>
                         </div>
+                        <div class="contact-item">
+                            <span class="label">NEW PROJECTS</span>
+                            <a href="mailto:work@penryn.studio" class="magnetic-link large-link">WORK@PENRYN.STUDIO</a>
+                        </div>
+                    </div>
 
-                        <div class="inquiry-links">
-                            <div class="link-group">
-                                <span class="label">ELECTRONIC MAIL</span>
-                                <a href="mailto:hello@prototype.agency" class="magnetic-link huge-link">HELLO@PROTOTYPE.AGENCY</a>
-                            </div>
-
-                            <div class="link-group">
-                                <span class="label">SOCIALS</span>
-                                <nav class="social-nav">
-                                    <a href="#" class="magnetic-link">INSTAGRAM</a>
-                                    <a href="#" class="magnetic-link">LINKEDIN</a>
-                                </nav>
-                            </div>
-
-                            <div class="link-group">
-                                <span class="label">COORDINATES</span>
-                                <p class="address">42 VAPORWAVE LANE,<br>NEO-TOKYO, 00000</p>
-                            </div>
+                    <div class="contact-col">
+                        <div class="contact-item">
+                            <span class="label">SOCIAL NODES</span>
+                            <ul class="social-list">
+                                <li><a href="#" class="magnetic-link">INSTAGRAM</a></li>
+                                <li><a href="#" class="magnetic-link">ARE.NA</a></li>
+                                <li><a href="#" class="magnetic-link">TWITTER / X</a></li>
+                                <li><a href="#" class="magnetic-link">BEHANCE</a></li>
+                            </ul>
+                        </div>
+                        <div class="contact-item">
+                            <span class="label">OFFICE</span>
+                            <p class="office-address">
+                                BERLIN, DE<br>
+                                ROSENTHALER STR. 40/41<br>
+                                10178 MITTE
+                            </p>
                         </div>
                     </div>
                 </div>
-            </section>
+
+                <div class="contact-footer-ticker">
+                    <div class="ticker-wrap">
+                        <span>AVAILABLE FOR Q3-Q4 2026 — AVAILABLE FOR Q3-Q4 2026 — </span>
+                    </div>
+                </div>
+            </div>
         `;
     }
 

@@ -8,7 +8,7 @@ import Controller from '/js/engine/Controller.js';
 export default class WorksController extends Controller {
     constructor(app) {
         super(app);
-        
+
         // Project Dataset
         this.projects = [
             { id: '01', name: "MARC JACOBS", img: "https://images.unsplash.com/photo-1539109132314-34a956ed99d6?auto=format&fit=crop&q=80&w=1200", slug: "marc-jacobs" },
@@ -26,7 +26,7 @@ export default class WorksController extends Controller {
         // 2. Inject the HTML
         this.app.el.innerHTML = this.template();
 
-         // 3. Update the Toolbar
+        // 3. Update the Toolbar
         if (this.app.toolbar) {
             this.app.toolbar.update('works', this.projects.length);
         }
@@ -38,6 +38,12 @@ export default class WorksController extends Controller {
 
         // 4. Start the Parallax Engine
         this.initParallax();
+    }
+
+    destroy() {
+        cancelAnimationFrame(this.tickerId); // Stops the follow loop
+        window.removeEventListener('mousemove', this.mouseHandler); // Stops mouse tracking
+        console.log("Works Loop Stopped");
     }
 
     template() {
@@ -69,12 +75,12 @@ export default class WorksController extends Controller {
 
     initParallax() {
         const images = document.querySelectorAll('.parallax-img');
-        
+
         const parallaxLoop = () => {
             images.forEach(img => {
                 const rect = img.parentElement.getBoundingClientRect();
                 const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-                
+
                 if (isVisible) {
                     const distance = window.innerHeight + rect.height;
                     const percentage = (window.innerHeight - rect.top) / distance;
