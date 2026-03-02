@@ -292,7 +292,7 @@ a { text-decoration: none; color: #f3f3f3; }
     left: 0;
     width: 100%;
     height: 100%;
-    background: #000;
+    background: #e5e5e5;
     z-index: 10000;
     opacity: 0;
     pointer-events: none;
@@ -685,33 +685,42 @@ a, .project-item, .magnetic-link {
     display: inline-block;
 }
 
-.film-grain {
+/* Level 5: Television Noise (The Grit) */
+.film-grain-overlay {
     position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    z-index: 9999; /* Sits on top of everything */
-    pointer-events: none; /* Crucial: Allows you to click things underneath */
-    opacity: 0.05; /* Keep it subtle! 0.05 - 0.08 is the sweet spot */
-}
-
-.film-grain::before {
-    content: "";
-    position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    filter: url(#grainy);
-    animation: grain-dance 8s steps(10) infinite;
+    z-index: 5; 
+    pointer-events: none;
 }
 
-/* Subtle movement to prevent "static" look */
-@keyframes grain-dance {
-    0%, 100% { transform: translate(0, 0); }
-    10% { transform: translate(-5%, -10%); }
-    30% { transform: translate(3%, -5%); }
-    50% { transform: translate(12%, 9%); }
-    70% { transform: translate(-3%, 10%); }
-    90% { transform: translate(-10%, 5%); }
+.film-grain-overlay::after {
+    content: '';
+    position: absolute;
+    top: -10rem; left: -10rem; width: 100%; height: 100%;
+    background: url('/assets/img/noise.png');
+    background-position: 50%;
+    animation: toStatic 1s steps(5) infinite;
+    opacity: .95;
+}
+
+/* @keyframes tvStatic {
+    0%, 100% { transform: translate(0,0); }
+    33% { transform: translate(-2%, 1%); }
+    66% { transform: translate(1%, -2%); }
+} */
+
+@keyframes toStatic {
+    0% {transform: translate3d(0, 9rem, 0);}
+    10% {transform: translate3d(-1rem, -4rem, 0);}
+    20% {transform: translate3d(-0rem, 2rem, 0);}
+    30% {transform: translate3d(9rem, -9rem, 0);}
+    40% {transform: translate3d(-2rem, 7rem, 0);}
+    50% {transform: translate3d(-9rem, -4rem, 0);}
+    60% {transform: translate3d(2rem, 6rem, 0);}
+    70% {transform: translate3d(7rem, -8rem, 0);}
+    80% {transform: translate3d(-9rem, 1rem, 0);}
+    90% {transform: translate3d(6rem, -5rem, 0);}
+    100% {transform: translate3d(-7rem, 0rem, 0);}
 }
 
 /* Bottom Left Menu */
@@ -752,7 +761,7 @@ a, .project-item, .magnetic-link {
 
 /* The background of the whole site */
 body {
-    background-color: #000;
+    background-color: #e5e5e5;
     margin: 0;
     overflow-x: hidden;
 }
@@ -780,7 +789,7 @@ body {
     z-index: 1; /* Sits behind the main content (#app) */
     opacity: 0;
     transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-    background: #000;
+    background: #e5e5e5;
     overflow: hidden;
 }
 
@@ -858,11 +867,6 @@ body {
     background-color: transparent !important;
 }
 
-/* Ensure the body is the only thing providing the 'black' floor */
-body {
-    background-color: #000;
-}
-
 /* Reset the Reveal Container to sit BEHIND */
 #bg-reveal-container {
     position: fixed;
@@ -916,6 +920,7 @@ body {
 .nav-logo, .nav-links {
     font-family: monospace, sans-serif;
     color: #f3f3f3;
+    padding: 0 5vw;
 }
 
 /* Logo Hidden State */
@@ -1348,7 +1353,7 @@ body {
     /* Lower than #app so it stays behind text */
     z-index: 1; 
     opacity: 0;
-    background: #000;
+    background: #e5e5e5;
     overflow: hidden;
     transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
 }
@@ -1378,7 +1383,7 @@ body {
     display: flex;
     align-items: center;
     overflow: hidden;
-    background: #000;
+    background: #e5e5e5;
 }
 
 .ticker-move {

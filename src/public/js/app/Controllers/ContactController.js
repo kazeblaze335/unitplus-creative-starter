@@ -10,10 +10,6 @@ export default class ContactController extends Controller {
         // 2. Inject the HTML
         this.app.el.innerHTML = this.template();
 
-         // 3. Update the Toolbar
-        if (this.app.toolbar) {
-            this.app.toolbar.update('contact', this.projects.length);
-        }
 
         // 2. Initialize the Typewriter effect
         const target = document.getElementById('typewriter');
@@ -29,10 +25,10 @@ export default class ContactController extends Controller {
     }
 
     destroy() {
-    cancelAnimationFrame(this.tickerId); // Stops the follow loop
-    window.removeEventListener('mousemove', this.mouseHandler); // Stops mouse tracking
-    console.log("Contact Loop Stopped");
-}
+        cancelAnimationFrame(this.tickerId); // Stops the follow loop
+        window.removeEventListener('mousemove', this.mouseHandler); // Stops mouse tracking
+        console.log("Contact Loop Stopped");
+    }
 
     template() {
         return `

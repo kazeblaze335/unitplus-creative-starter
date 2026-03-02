@@ -3,14 +3,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: unitplus_dev_server
+    container_name: bumperplus_dev_server
     ports:
       - "8000:80"
     volumes:
       # Map the whole public folder
       - ./src/public:/var/www/html
-      # Explicitly map the data folder as a backup sync
-      - ./src/public/data:/var/www/html/data
     environment:
       - APACHE_RUN_USER=www-data
       - APACHE_RUN_GROUP=www-data
@@ -20,4 +18,4 @@ services:
 
 networks:
   default:
-    name: unitplus_network
+    name: bumperplus_network

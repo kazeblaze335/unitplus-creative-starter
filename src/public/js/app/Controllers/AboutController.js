@@ -10,11 +10,6 @@ export default class AboutController extends Controller {
         // 2. Inject the HTML
         this.app.el.innerHTML = this.template();
 
-        // 3. Update the Toolbar
-        if (this.app.toolbar) {
-            this.app.toolbar.update('about', this.projects.length);
-        }
-
         // Refresh cursor for the big-cta and magnetic links
         if (window.Penryn && window.Penryn.cursor) window.Penryn.cursor.refresh();
     }
